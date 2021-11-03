@@ -29,6 +29,7 @@ jobs:
         name: .net-app
         path: eShopModernizing\eShopModernizedMVCSolution\src\eShopModernizedMVC\obj\Docker\publish
 
+
   deploy:
     runs-on: windows-latest
     needs: build
