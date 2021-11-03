@@ -20,14 +20,14 @@ jobs:
     - name: Build and Publish Web App
       run: msbuild eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
-    - name: Find the artifact
-      run: Get-ChildItem -Include *.zip -File -Recurse -ErrorAction SilentlyContinue
+    # - name: Find the artifact
+    #   run: Get-ChildItem -Include *.zip -File -Recurse -ErrorAction SilentlyContinue
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
         name: .net-app
-        path: ${{env.DOTNET_ROOT}}/myapp
+        path: eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC\bin\Release\Publish
 
   deploy:
     runs-on: windows-latest
