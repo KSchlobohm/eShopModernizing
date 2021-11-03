@@ -26,6 +26,8 @@ namespace eShopModernizedMVC.Controllers
         // GET /[?pageSize=3&pageIndex=10]
         public ActionResult Index(int pageSize = 10, int pageIndex = 0, string searchTerm = null)
         {
+            Session["YouHaveASession"] = Guid.NewGuid().ToString();
+
             _log.Info($"Now loading... /Search/Index?searchTerm={searchTerm ?? "null"}pageSize={pageSize}&pageIndex={pageIndex}");
             var paginatedItems = _service.GetCatalogItemsPaginated(pageSize, pageIndex, searchTerm);
             ChangeUriPlaceholder(paginatedItems.Data);
