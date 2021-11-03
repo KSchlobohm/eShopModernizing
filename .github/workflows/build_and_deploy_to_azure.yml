@@ -18,7 +18,7 @@ jobs:
       run: nuget restore eShopModernizedMVCSolution\eShopModernizedMVC.sln
  
     - name: Build and Publish Web App
-      run: msbuild eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile1
 
     - name: Find the artifact
       run: Get-ChildItem -Include *eShopModernizedMVC.dll -File -Recurse -ErrorAction SilentlyContinue
