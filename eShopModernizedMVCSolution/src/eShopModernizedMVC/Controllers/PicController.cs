@@ -27,8 +27,12 @@ namespace eShopModernizedMVC.Controllers
             _catalogService = service;
         }
 
+        private const int CACHE_DURATION_AS_SECONDS = 60;
+
         [HttpGet]
         [Route("items/{catalogItemId:int}/pic", Name = GetPicRouteName)]
+        // note that this would cause incorrect behavior for admin users - we should have 2 image URLs
+        // [OutputCache(Duration = CACHE_DURATION_AS_SECONDS, VaryByParam = "catalogItemId")]
         public ActionResult Index(int catalogItemId)
         {
             _log.Info($"Now loading... /items/Index?{catalogItemId}/pic");

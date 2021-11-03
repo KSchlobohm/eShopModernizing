@@ -9,10 +9,19 @@
 </head>
 <body>
     <header class="navbar navbar-light navbar-static-top">
-        <div class="esh-header-brand">
-            <a href="@Url.Action("index", "catalog")">
-                <img src="~/images/brand.png" />
-            </a>
+        <div class="esh-header-brand" style="margin-left:inherit;">
+            <ul style="list-style-type:none;">
+                <li style="display:inline">
+                    <a href="@Url.Action("index", "catalog")"><img src="~/images/brand.png" /></a>
+                </li>
+                <li style="display:inline">
+                    <a href="@Url.Action("index", "catalog")">Catalog</a>
+                </li>
+                <li style="display:inline">
+                    <a href="@Url.Action("index", "search")">Search</a>
+                </li>
+            </ul>
+            
             @if (CatalogConfiguration.UseAzureActiveDirectory)
             {
                 @Html.Partial("_LoginPartial")

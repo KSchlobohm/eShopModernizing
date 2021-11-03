@@ -25,7 +25,7 @@ namespace eShopModernizedMVC.Controllers
         public ActionResult Index(int pageSize = 10, int pageIndex = 0)
         {
             _log.Info($"Now loading... /Catalog/Index?pageSize={pageSize}&pageIndex={pageIndex}");
-            var paginatedItems = _service.GetCatalogItemsPaginated(pageSize, pageIndex);
+            var paginatedItems = _service.GetCatalogItemsPaginated(pageSize, pageIndex, null);
             ChangeUriPlaceholder(paginatedItems.Data);
             return View(paginatedItems);
         }

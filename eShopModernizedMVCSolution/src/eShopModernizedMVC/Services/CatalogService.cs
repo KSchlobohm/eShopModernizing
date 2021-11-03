@@ -17,13 +17,22 @@ namespace eShopModernizedMVC.Services
             this.indexGenerator = indexGenerator;
         }
 
-        public PaginatedItemsViewModel<CatalogItem> GetCatalogItemsPaginated(int pageSize, int pageIndex)
+        public PaginatedItemsViewModel<CatalogItem> GetCatalogItemsPaginated(int pageSize, int pageIndex, string searchTerm = null)
         {
-            var totalItems = db.CatalogItems.LongCount();
-
-            var itemsOnPage = db.CatalogItems
+            var items = db.CatalogItems
                 .Include(c => c.CatalogBrand)
-                .Include(c => c.CatalogType)
+                .Include(c => c.CatalogType);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var upperSearchTerm = searchTerm.ToUpper();
+                items = items.Where(c => c.Name.ToUpper().Contains(upperSearchTerm)
+                    || c.Description.ToUpper().Contains(upperSearchTerm));
+            }
+
+            var totalItems = items.LongCount();
+
+            var itemsOnPage = items
                 .OrderBy(c => c.Id)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)

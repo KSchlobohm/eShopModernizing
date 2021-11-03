@@ -15,10 +15,17 @@ namespace eShopModernizedMVC.Services
             catalogItems = new List<CatalogItem>(PreconfiguredData.GetPreconfiguredCatalogItems());
         }
 
-        public PaginatedItemsViewModel<CatalogItem> GetCatalogItemsPaginated(int pageSize = 10, int pageIndex = 0)
+        public PaginatedItemsViewModel<CatalogItem> GetCatalogItemsPaginated(int pageSize = 10, int pageIndex = 0, string searchTerm = null)
         {
             var items = ComposeCatalogItems(catalogItems);
-            
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var upperSearchTerm = searchTerm.ToUpper();
+                items = items.Where(c => c.Name.ToUpper().Contains(upperSearchTerm)
+                    || c.Description.ToUpper().Contains(upperSearchTerm)).ToList();
+            }
+
             var itemsOnPage = items
                 .OrderBy(c => c.Id)
                 .Skip(pageSize * pageIndex)
