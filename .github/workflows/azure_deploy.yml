@@ -14,15 +14,14 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.1
        
-    # - name: Setup NuGet
-    #   uses: NuGet/setup-nuget@v1.0.2
-     
     - name: Restore NuGet Packages
       run: nuget restore eShopModernizedMVCSolution\eShopModernizedMVC.sln
  
     - name: Build and Publish Web App
       run: msbuild eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
+    - name: Find the artifact
+      run: find eShopModernizedMVCSolution -name eShopModernizedMVC
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
