@@ -27,7 +27,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: .net-app
-        path: eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC\bin\Release\Publish
+        path: bin\Release\Publish
 
   deploy:
     runs-on: windows-latest
