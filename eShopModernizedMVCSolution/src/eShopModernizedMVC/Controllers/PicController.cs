@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,10 +17,38 @@ namespace eShopModernizedMVC.Controllers
 
         private static readonly ImageFormat[] ValidFormats = { ImageFormat.Jpeg, ImageFormat.Png, ImageFormat.Gif };
         private readonly IImageService _imageService;
+        private readonly ICatalogService _catalogService;
+        public const string GetPicRouteName = "GetPicRouteTemplate";
+
 
         public PicController(ICatalogService service, IImageService imageService)
         {
             _imageService = imageService;
+            _catalogService = service;
+        }
+
+        [HttpGet]
+        [Route("items/{catalogItemId:int}/pic", Name = GetPicRouteName)]
+        public ActionResult Index(int catalogItemId)
+        {
+            _log.Info($"Now loading... /items/Index?{catalogItemId}/pic");
+
+            if (catalogItemId <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var item = _catalogService.FindCatalogItem(catalogItemId);
+
+            if (item != null)
+            {
+                string mimetype = GetImageMimeTypeFromImageFileExtension(item.PictureFileName);
+                var buffer = Convert.FromBase64String(item.ImageData);
+
+                return File(buffer, mimetype);
+            }
+
+            return HttpNotFound();
         }
 
         [HttpPost]
@@ -36,11 +65,11 @@ namespace eShopModernizedMVC.Controllers
             }
 
             int.TryParse(itemId, out var catalogItemId);
-            var urlImageTemp = _imageService.UploadTempImage(image, catalogItemId);
+            var tempImageId = _imageService.UploadTempImage(image, catalogItemId);
             var tempImage = new
             {
-                name = new Uri(urlImageTemp).PathAndQuery,
-                url = urlImageTemp
+                name = tempImageId,
+                url = _imageService.UrlDefaultImage()
             };
 
             return Json(tempImage);
@@ -64,5 +93,43 @@ namespace eShopModernizedMVC.Controllers
             return isValidImage;
         }
 
+        private string GetImageMimeTypeFromImageFileExtension(string extension)
+        {
+            string mimetype;
+
+            switch (extension)
+            {
+                case ".png":
+                    mimetype = "image/png";
+                    break;
+                case ".gif":
+                    mimetype = "image/gif";
+                    break;
+                case ".jpg":
+                case ".jpeg":
+                    mimetype = "image/jpeg";
+                    break;
+                case ".bmp":
+                    mimetype = "image/bmp";
+                    break;
+                case ".tiff":
+                    mimetype = "image/tiff";
+                    break;
+                case ".wmf":
+                    mimetype = "image/wmf";
+                    break;
+                case ".jp2":
+                    mimetype = "image/jp2";
+                    break;
+                case ".svg":
+                    mimetype = "image/svg+xml";
+                    break;
+                default:
+                    mimetype = "application/octet-stream";
+                    break;
+            }
+
+            return mimetype;
+        }
     }
 }

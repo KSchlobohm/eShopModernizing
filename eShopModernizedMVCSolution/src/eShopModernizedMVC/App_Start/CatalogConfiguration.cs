@@ -21,6 +21,14 @@ namespace eShopModernizedMVC
             }
         }
 
+        public static bool UseSqlStorage
+        {
+            get
+            {
+                return IsEnabled("UseSqlStorage");
+            }
+        }
+
         public static bool UseManagedIdentity
         {
             get

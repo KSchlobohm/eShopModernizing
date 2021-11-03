@@ -9,12 +9,14 @@ namespace eShopModernizedMVC.Modules
     {
         private bool useMockData;
         private bool useAzureStorage;
+        private bool useSqlStorage;
         private bool useManagedIdentity;
 
-        public ApplicationModule(bool useMockData, bool useAzureStorage, bool useManagedIdentity)
+        public ApplicationModule(bool useMockData, bool useAzureStorage, bool useSqlStorage, bool useManagedIdentity)
         {
             this.useMockData = useMockData;
             this.useAzureStorage = useAzureStorage;
+            this.useSqlStorage = useSqlStorage;
             this.useManagedIdentity = useManagedIdentity;
         }
         protected override void Load(ContainerBuilder builder)
@@ -35,6 +37,12 @@ namespace eShopModernizedMVC.Modules
             if (this.useAzureStorage)
             {
                 builder.RegisterType<ImageAzureStorage>()
+                    .As<IImageService>()
+                    .InstancePerLifetimeScope();
+            }
+            else if (this.useSqlStorage)
+            {
+                builder.RegisterType<ImageSqlStorage>()
                     .As<IImageService>()
                     .InstancePerLifetimeScope();
             }

@@ -51,7 +51,7 @@ namespace eShopModernizedMVC
             var builder = new ContainerBuilder();
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            builder.RegisterModule(new ApplicationModule(CatalogConfiguration.UseMockData, CatalogConfiguration.UseAzureStorage, CatalogConfiguration.UseManagedIdentity));
+            builder.RegisterModule(new ApplicationModule(CatalogConfiguration.UseMockData, CatalogConfiguration.UseAzureStorage, CatalogConfiguration.UseSqlStorage, CatalogConfiguration.UseManagedIdentity));
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

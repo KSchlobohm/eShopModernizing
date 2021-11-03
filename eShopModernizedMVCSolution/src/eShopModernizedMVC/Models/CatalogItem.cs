@@ -56,5 +56,8 @@ namespace eShopModernizedMVC.Models
 
         public string TempImageName { get; set; }
 
+        // images will be saved to the database with base64 encoding
+        // images are 370x240
+        public string ImageData { get; set; }
     }
 }

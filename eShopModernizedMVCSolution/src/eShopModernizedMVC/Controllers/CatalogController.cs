@@ -55,7 +55,7 @@ namespace eShopModernizedMVC.Controllers
             _log.Info($"Now loading... /Catalog/Create");
             ViewBag.CatalogBrandId = new SelectList(_service.GetCatalogBrands(), "Id", "Brand");
             ViewBag.CatalogTypeId = new SelectList(_service.GetCatalogTypes(), "Id", "Type");
-            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage;
+            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage || CatalogConfiguration.UseSqlStorage;
 
             return View(new CatalogItem()
             {
@@ -75,8 +75,7 @@ namespace eShopModernizedMVC.Controllers
             {
                 if (!string.IsNullOrEmpty(catalogItem.TempImageName))
                 {
-                    var fileName = Path.GetFileName(catalogItem.TempImageName);
-                    catalogItem.PictureFileName = fileName;
+                    _imageService.UpdateImage(catalogItem);
                 }
 
                 _service.CreateCatalogItem(catalogItem);
@@ -89,7 +88,7 @@ namespace eShopModernizedMVC.Controllers
 
             ViewBag.CatalogBrandId = new SelectList(_service.GetCatalogBrands(), "Id", "Brand", catalogItem.CatalogBrandId);
             ViewBag.CatalogTypeId = new SelectList(_service.GetCatalogTypes(), "Id", "Type", catalogItem.CatalogTypeId);
-            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage;
+            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage || CatalogConfiguration.UseSqlStorage;
             return View(catalogItem);
         }
 
@@ -112,7 +111,7 @@ namespace eShopModernizedMVC.Controllers
             AddUriPlaceHolder(catalogItem);
             ViewBag.CatalogBrandId = new SelectList(_service.GetCatalogBrands(), "Id", "Brand", catalogItem.CatalogBrandId);
             ViewBag.CatalogTypeId = new SelectList(_service.GetCatalogTypes(), "Id", "Type", catalogItem.CatalogTypeId);
-            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage;
+            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage || CatalogConfiguration.UseSqlStorage;
             return View(catalogItem);
         }
 
@@ -129,8 +128,6 @@ namespace eShopModernizedMVC.Controllers
                 if (!string.IsNullOrEmpty(catalogItem.TempImageName))
                 {
                     _imageService.UpdateImage(catalogItem);
-                    var fileName = Path.GetFileName(catalogItem.TempImageName);
-                    catalogItem.PictureFileName = fileName;
                 }
 
                 _service.UpdateCatalogItem(catalogItem);
@@ -138,7 +135,7 @@ namespace eShopModernizedMVC.Controllers
             }
             ViewBag.CatalogBrandId = new SelectList(_service.GetCatalogBrands(), "Id", "Brand", catalogItem.CatalogBrandId);
             ViewBag.CatalogTypeId = new SelectList(_service.GetCatalogTypes(), "Id", "Type", catalogItem.CatalogTypeId);
-            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage;
+            ViewBag.UseAzureStorage = CatalogConfiguration.UseAzureStorage || CatalogConfiguration.UseSqlStorage;
             return View(catalogItem);
         }
 

@@ -11,6 +11,7 @@ namespace eShopModernizedMVC.Models
         {
         }
 
+        public DbSet<TempImage> TempImages { get; set; }
 
         public DbSet<CatalogItem> CatalogItems { get; set; }
 
@@ -76,7 +77,7 @@ namespace eShopModernizedMVC.Models
 
 
             builder.Ignore(ci => ci.PictureUri);
-            builder.Ignore(ci => ci.TempImageName);
+            //builder.Ignore(ci => ci.TempImageName);
 
             builder.HasRequired<CatalogBrand>(ci => ci.CatalogBrand)
                 .WithMany()
