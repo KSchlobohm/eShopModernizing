@@ -23,20 +23,11 @@ jobs:
     - name: Find the artifact
       run: Get-ChildItem -Include *eShopModernizedMVC.dll -File -Recurse -ErrorAction SilentlyContinue
 
-    - name: Add Redis connection
-      uses: cschleiden/replace-tokens@v1
-      with:
-        tokenPrefix: '['
-        tokenSuffix: ']'
-        files: '["**/wen.config"]'
-      env:
-        Host: ${{ secrets.REDIS_HOST}}
-
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
         name: .net-app
-        path: D:\a\eShopModernizing\eShopModernizing\eShopModernizedMVCSolution\src\eShopModernizedMVC\obj\Docker\publish\bin
+        path: eShopModernizedMVCSolution\src\eShopModernizedMVC\bin\app.publish\
 
 
   deploy:
