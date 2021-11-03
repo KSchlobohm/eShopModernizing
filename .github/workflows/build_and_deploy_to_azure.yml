@@ -21,7 +21,7 @@ jobs:
       run: msbuild eShopModernizedMVCSolution\src\eShopModernizedMVC\eShopModernizedMVC.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
 
     - name: Find the artifact
-      run: Get-ChildItem *eShopModernizedMVC.zip - Recurse
+      run: Get-ChildItem *eShopModernizedMVC.zip -Recurse
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
